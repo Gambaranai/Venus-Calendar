@@ -34,7 +34,7 @@ const TEXT = {
         magnitude: '見かけの等級',
         distance: '地球からの距離',
         diameter: '見かけの視直径',
-        selectedEvent: '選択中のイベント'
+        selectedEvent: 'イベント'
     },
     en: {
         appTitle: 'Venus Phase Calendar',
@@ -59,7 +59,7 @@ const TEXT = {
         magnitude: 'Apparent Magnitude',
         distance: 'Distance from Earth',
         diameter: 'Apparent Diameter',
-        selectedEvent: 'Selected Event'
+        selectedEvent: 'NEXT EVENT'
     }
 };
 
@@ -436,7 +436,7 @@ function updateApp(date) {
     // paSunObj is 0 if Sun is North, PI/2 if East, -PI/2 if West.
 
     // Draw Visuals (both background cache, toggle determines visibility)
-    drawVenus(fraction, isWaxing, illum.mag, ctx, canvas.width, angDiam, paSunObj);
+    drawVenus(fraction, isWaxing, illum.mag, ctx, canvas.width, angDiam, paSunObj, true);
     drawOrbitModel(date, orbitCtx, orbitCanvas.width);
 
     // Update Text info
@@ -542,7 +542,7 @@ function formatDate(d) {
 }
 
 // Draw Venus Phase on Canvas
-function drawVenus(fraction, isWaxing, mag, targetCtx, canvasSize, angDiam, paSun) {
+function drawVenus(fraction, isWaxing, mag, targetCtx, canvasSize, angDiam, paSun, showAxis = true) {
     targetCtx.clearRect(0, 0, canvasSize, canvasSize);
     
     const cx = canvasSize / 2;
@@ -572,6 +572,26 @@ function drawVenus(fraction, isWaxing, mag, targetCtx, canvasSize, angDiam, paSu
         let rotationTarget = -paSun + Math.PI/2;
         if (!isWaxing) rotationTarget += Math.PI; 
         targetCtx.rotate(rotationTarget);
+    }
+
+    if (showAxis) {
+        // Draw Venus rotation axis first (behind the body).
+        // The planet body is drawn afterward to hide the front-facing segment.
+        const axisTilt = 12 * Math.PI / 180;
+        const axisLen = radius * 2.8;
+        const x1 = -Math.sin(axisTilt) * axisLen * 0.5;
+        const y1 = -Math.cos(axisTilt) * axisLen * 0.5;
+        const x2 = Math.sin(axisTilt) * axisLen * 0.5;
+        const y2 = Math.cos(axisTilt) * axisLen * 0.5;
+        targetCtx.save();
+        targetCtx.setLineDash([4, 4]);
+        targetCtx.lineWidth = Math.max(1, radius * 0.05);
+        targetCtx.strokeStyle = 'rgba(226, 232, 240, 0.72)';
+        targetCtx.beginPath();
+        targetCtx.moveTo(x1, y1);
+        targetCtx.lineTo(x2, y2);
+        targetCtx.stroke();
+        targetCtx.restore();
     }
 
     // Draw full dark circle first
@@ -914,7 +934,7 @@ function renderCalendar() {
         calCanvas.height = miniSize;
         const calCtx = calCanvas.getContext('2d');
         // Render mini version (CSS filter applies glow)
-        drawVenus(fraction, isWaxing, illum.mag, calCtx, miniSize, calAngDiam, calPaSun);
+        drawVenus(fraction, isWaxing, illum.mag, calCtx, miniSize, calAngDiam, calPaSun, false);
     }
 }
 
