@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金星満ち欠けカレンダー</title>
+    <!-- Google Fonts for Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="star-field"></div>
+    <div class="app-container">
+        <div class="lang-switch" aria-label="Language switcher">
+            <button id="lang-jp" class="lang-btn active" type="button">JP</button>
+            <button id="lang-en" class="lang-btn" type="button">EN</button>
+        </div>
+        
+        <header>
+            <div class="logo">
+                <h1 id="app-title">金星満ち欠けカレンダー</h1>
+            </div>
+        </header>
+
+        <!-- Main Venus Display Area -->
+        <main class="hero-section">
+            <div class="venus-visual-container">
+                <div class="nav-side nav-left">
+                    <div class="nav-control">
+                        <span class="nav-label" data-i18n="month">月</span>
+                        <button class="nav-btn" id="sub-month" title="-1 Month">◁</button>
+                    </div>
+                    <div class="nav-control">
+                        <span class="nav-label" data-i18n="week">週</span>
+                        <button class="nav-btn" id="sub-week" title="-1 Week">◁</button>
+                    </div>
+                    <div class="nav-control">
+                        <span class="nav-label" data-i18n="day">日</span>
+                        <button class="nav-btn" id="sub-day" title="-1 Day">◁</button>
+                    </div>
+                </div>
+                
+                <div class="canvas-wrapper">
+                    <div class="top-actions">
+                        <button id="toggle-view-btn" class="btn-primary">🪐 軌道モデル</button>
+                        <button id="today-btn" class="btn-primary">今日</button>
+                    </div>
+                    <div class="canvases-container">
+                        <canvas id="venus-canvas" width="400" height="400"></canvas>
+                        <canvas id="orbit-canvas" width="400" height="400" style="display: none;"></canvas>
+                    </div>
+                    <div class="date-overlay" id="display-date">YYYY/MM/DD</div>
+                    <div class="visibility-overlay" id="visibility-overlay">明けの明星</div>
+                    <div class="playback-controls">
+                        <button class="play-btn" id="anim-rev" title="Rewind">◀</button>
+                        <button class="play-btn" id="anim-pause" title="Pause">⏸</button>
+                        <button class="play-btn" id="anim-fwd" title="Play">▶</button>
+                    </div>
+                </div>
+
+                <div class="nav-side nav-right">
+                    <div class="nav-control">
+                        <span class="nav-label" data-i18n="month">月</span>
+                        <button class="nav-btn" id="add-month" title="+1 Month">▷</button>
+                    </div>
+                    <div class="nav-control">
+                        <span class="nav-label" data-i18n="week">週</span>
+                        <button class="nav-btn" id="add-week" title="+1 Week">▷</button>
+                    </div>
+                    <div class="nav-control">
+                        <span class="nav-label" data-i18n="day">日</span>
+                        <button class="nav-btn" id="add-day" title="+1 Day">▷</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-panel glass-panel">
+                <h2 id="astro-title">天文データ</h2>
+                <ul>
+                    <li>
+                        <span class="data-label" id="label-phase">位相</span>
+                        <span class="data-value" id="data-phase">--</span>
+                    </li>
+                    <li>
+                        <span class="data-label" id="label-illumination">満ち欠け</span>
+                        <span class="data-value" id="data-illumination">--%</span>
+                    </li>
+                    <li>
+                        <span class="data-label" id="label-magnitude">見かけの等級</span>
+                        <span class="data-value" id="data-magnitude">--</span>
+                    </li>
+                    <li>
+                        <span class="data-label" id="label-distance">地球からの距離</span>
+                        <span class="data-value" id="data-distance">-- AU</span>
+                    </li>
+                    <li>
+                        <span class="data-label" id="label-diameter">見かけの視直径</span>
+                        <span class="data-value" id="data-diameter">-- arcsec</span>
+                    </li>
+                    <li>
+                        <span class="data-label" id="label-event">選択中のイベント</span>
+                        <div class="event-controller">
+                            <button class="event-nav-btn" id="prev-event" title="Previous Event">◁</button>
+                            <span class="data-value upcoming-event" id="data-event">検索中...</span>
+                            <button class="event-nav-btn" id="next-event" title="Next Event">▷</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </main>
+
+        <!-- Collapsible Calendar Section -->
+        <section class="calendar-section glass-panel">
+            <details class="glass-panel" open>
+                <summary>
+                    <h2 id="calendar-title">カレンダー</h2>
+                    <span class="toggle-icon">▼</span>
+                </summary>
+                
+                <div class="calendar-controls">
+                    <button id="prev-month-btn" class="btn-icon">◀</button>
+                    <div id="calendar-month-year">
+                        <div class="year-picker-container">
+                            <span id="cal-year-text" class="year-select-text">2026</span>
+                            <div id="year-dropdown" class="year-dropdown-list hidden"></div>
+                        </div> / <div class="month-picker-container">
+                            <span id="cal-month-text" class="month-select-text">MM</span>
+                            <div id="month-dropdown" class="month-dropdown-list hidden"></div>
+                        </div>
+                    </div>
+                    <button id="next-month-btn" class="btn-icon">▶</button>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- Days of Week Headers -->
+                    <div class="day-header" id="weekday-0">日</div>
+                    <div class="day-header" id="weekday-1">月</div>
+                    <div class="day-header" id="weekday-2">火</div>
+                    <div class="day-header" id="weekday-3">水</div>
+                    <div class="day-header" id="weekday-4">木</div>
+                    <div class="day-header venus-day" id="weekday-5">金</div>
+                    <div class="day-header" id="weekday-6">土</div>
+
+                    <!-- Calendar Days injected by JS -->
+                    <div id="calendar-days" class="calendar-days"></div>
+                </div>
+            </details>
+        </section>
+    </div>
+
+    <!-- Astronomy Engine CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
