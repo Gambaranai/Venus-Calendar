@@ -1,21 +1,69 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>金星満ち欠けカレンダー | インタラクティブ天体データ</title>
-    <meta name="description" content="金星の満ち欠け、位相、地球からの距離、見かけの等級をインタラクティブに確認できる高精度なカレンダーアプリです。今日だけでなく過去・未来の金星の姿をシミュレーションできます。">
-    <meta name="keywords" content="金星満ち欠けカレンダー, 金星, 満ち欠け, カレンダー, 位相, 天文データ, 惑星, 軌道, 明けの明星, 宵の明星">
-    <meta property="og:title" content="金星満ち欠けカレンダー | インタラクティブ天体データ">
-    <meta property="og:description" content="金星の満ち欠け、位相、地球からの距離をインタラクティブに確認できる高精度なカレンダーアプリです。">
+
+    <!-- ===== 基本SEO ===== -->
+    <title>金星満ち欠けカレンダー｜明けの明星・宵の明星をリアルタイム確認</title>
+    <meta name="description"
+        content="金星の満ち欠け（位相）・見かけの大きさ・地球からの距離を日付指定でシミュレーション。明けの明星・宵の明星の時期、最大離角・内合・外合などの天文イベントもカレンダーで確認できます。">
+    <meta name="keywords" content="金星満ち欠けカレンダー, 金星 満ち欠け, 明けの明星, 宵の明星, 金星 位相, 金星 シミュレーション, 最大離角, 内合, 外合, 天体観測, 惑星カレンダー">
+    <meta name="author" content="gambaranai">
+    <link rel="canonical" href="https://gambaranai.github.io/Venus-Calendar/">
+
+    <!-- ===== OGP（SNSシェア用） ===== -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gambaranai.github.io/Venus-Calendar/">
+    <meta property="og:title" content="金星満ち欠けカレンダー｜明けの明星・宵の明星をリアルタイム確認">
+    <meta property="og:description" content="金星の満ち欠けをカレンダーでシミュレーション。明けの明星・宵の明星の時期や最大離角など重要イベントも検索できます。">
+    <meta property="og:image" content="https://gambaranai.github.io/Venus-Calendar/ogp.png">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:site_name" content="金星満ち欠けカレンダー">
+
+    <!-- ===== Twitter Card ===== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="金星満ち欠けカレンダー｜明けの明星・宵の明星をリアルタイム確認">
+    <meta name="twitter:description" content="金星の満ち欠けをカレンダーでシミュレーション。明けの明星・宵の明星の時期や最大離角など重要イベントも検索できます。">
+    <meta name="twitter:image" content="https://gambaranai.github.io/Venus-Calendar/ogp.png">
+
+    <!-- ===== 構造化データ（JSON-LD） ===== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "金星満ち欠けカレンダー",
+      "alternateName": "Venus Phase Calendar",
+      "url": "https://gambaranai.github.io/Venus-Calendar/",
+      "description": "金星の満ち欠け（位相）・見かけの大きさ・地球からの距離を日付指定でシミュレーションできる天体カレンダーアプリ。明けの明星・宵の明星の時期、最大離角・内合・外合などの天文イベントを確認できます。",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "gambaranai"
+      },
+      "inLanguage": "ja"
+    }
+    </script>
+
+    <!-- ===== ファビコン ===== -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <!-- Google Fonts for Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Main Stylesheet -->
+
+    <!-- ===== フォント ===== -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- ===== スタイルシート ===== -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="star-field"></div>
     <div class="app-container">
@@ -23,7 +71,7 @@
             <button id="lang-jp" class="lang-btn active" type="button">JP</button>
             <button id="lang-en" class="lang-btn" type="button">EN</button>
         </div>
-        
+
         <header>
             <div class="logo">
                 <h1 id="app-title">金星満ち欠けカレンダー</h1>
@@ -47,7 +95,7 @@
                         <button class="nav-btn" id="sub-day" title="-1 Day">◁</button>
                     </div>
                 </div>
-                
+
                 <div class="canvas-wrapper">
                     <div class="top-actions">
                         <button id="toggle-view-btn" class="btn-primary">🪐 軌道モデル</button>
@@ -124,7 +172,7 @@
                     <h2 id="calendar-title">カレンダー</h2>
                     <span class="toggle-icon">▼</span>
                 </summary>
-                
+
                 <div class="calendar-controls">
                     <button id="prev-month-btn" class="btn-icon">◀</button>
                     <div id="calendar-month-year">
@@ -160,4 +208,5 @@
     <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
