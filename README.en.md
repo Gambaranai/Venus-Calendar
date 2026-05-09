@@ -1,4 +1,5 @@
 # Venus Phase Calendar (金星満ち欠けカレンダー)
+[日本語](./README.md)
 
 [**🌐 Open Venus Phase Calendar**](https://gambaranai.github.io/Venus-Calendar/)
 
